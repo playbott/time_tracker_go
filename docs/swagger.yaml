@@ -1,0 +1,482 @@
+basePath: /
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  sql.NullTime:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  time_tracker_internal_models.Page:
+    properties:
+      number:
+        minimum: 1
+        type: integer
+      size:
+        minimum: 1
+        type: integer
+    required:
+    - number
+    - size
+    type: object
+  time_tracker_internal_models.Response-array_time_tracker_internal_models_Task2:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/time_tracker_internal_models.Task2'
+        type: array
+      message:
+        type: string
+    type: object
+  time_tracker_internal_models.Response-string:
+    properties:
+      data:
+        type: string
+      message:
+        type: string
+    type: object
+  time_tracker_internal_models.Response-time_tracker_internal_models_TaskCreateRequest:
+    properties:
+      data:
+        $ref: '#/definitions/time_tracker_internal_models.TaskCreateRequest'
+      message:
+        type: string
+    type: object
+  time_tracker_internal_models.Response-time_tracker_internal_models_User:
+    properties:
+      data:
+        $ref: '#/definitions/time_tracker_internal_models.User'
+      message:
+        type: string
+    type: object
+  time_tracker_internal_models.ResponseError:
+    properties:
+      message:
+        type: string
+    type: object
+  time_tracker_internal_models.Task:
+    properties:
+      completed_at:
+        $ref: '#/definitions/sql.NullTime'
+      created_at:
+        type: string
+      deleted_at:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      started_at:
+        type: string
+      title:
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  time_tracker_internal_models.Task2:
+    properties:
+      completed_at:
+        type: string
+      duration_seconds:
+        type: integer
+      duration_string:
+        type: string
+      id:
+        type: integer
+      started_at:
+        type: string
+      title:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  time_tracker_internal_models.TaskCompleteRequest:
+    properties:
+      id:
+        type: integer
+      user_id:
+        minimum: 1
+        type: integer
+    required:
+    - user_id
+    type: object
+  time_tracker_internal_models.TaskCreateRequest:
+    properties:
+      id:
+        type: integer
+      task_title:
+        maxLength: 255
+        minLength: 1
+        type: string
+      user_id:
+        minimum: 1
+        type: integer
+    required:
+    - task_title
+    - user_id
+    type: object
+  time_tracker_internal_models.TasksGetFilter:
+    properties:
+      completed_at_from:
+        type: string
+      completed_at_to:
+        type: string
+      started_at_from:
+        type: string
+      started_at_to:
+        type: string
+      title:
+        maxLength: 255
+        type: string
+    type: object
+  time_tracker_internal_models.TasksGetRequest:
+    properties:
+      filter:
+        $ref: '#/definitions/time_tracker_internal_models.TasksGetFilter'
+      page:
+        $ref: '#/definitions/time_tracker_internal_models.Page'
+    type: object
+  time_tracker_internal_models.TasksSearchResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/time_tracker_internal_models.Task2'
+        type: array
+      message:
+        type: string
+      page:
+        $ref: '#/definitions/time_tracker_internal_models.Page'
+    type: object
+  time_tracker_internal_models.User:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      passport_number:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+      task:
+        items:
+          $ref: '#/definitions/time_tracker_internal_models.Task'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  time_tracker_internal_models.UserCreateRequest:
+    properties:
+      passport_number:
+        type: string
+    type: object
+  time_tracker_internal_models.UserUpdateRequest:
+    properties:
+      address:
+        type: string
+      name:
+        type: string
+      passport_number:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+  time_tracker_internal_models.UsersGetFilter:
+    properties:
+      address:
+        maxLength: 255
+        type: string
+      name:
+        maxLength: 255
+        type: string
+      passport_number:
+        maxLength: 11
+        type: string
+      patronymic:
+        maxLength: 255
+        type: string
+      surname:
+        maxLength: 255
+        type: string
+    type: object
+  time_tracker_internal_models.UsersGetRequest:
+    properties:
+      filter:
+        $ref: '#/definitions/time_tracker_internal_models.UsersGetFilter'
+      page:
+        $ref: '#/definitions/time_tracker_internal_models.Page'
+    type: object
+  time_tracker_internal_models.UsersResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/time_tracker_internal_models.User'
+        type: array
+      message:
+        type: string
+      page:
+        $ref: '#/definitions/time_tracker_internal_models.Page'
+    type: object
+host: localhost:80
+info:
+  contact:
+    email: rovsh.dev@gmail.com
+    name: API Support
+  description: This is a simple API for time tracking.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Time Tracker API
+  version: "1.0"
+paths:
+  /api/v1/task:
+    get:
+      consumes:
+      - application/json
+      description: Task search with filter and pagination.
+      parameters:
+      - description: search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.TasksGetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.TasksSearchResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.ResponseError'
+      summary: task search with filter and pagination
+      tags:
+      - Task
+  /api/v1/task/complete:
+    post:
+      consumes:
+      - application/json
+      description: Complete a task.
+      parameters:
+      - description: task id and user id
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.TaskCompleteRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.Response-string'
+      summary: complete a task
+      tags:
+      - Task
+  /api/v1/task/create-start:
+    post:
+      consumes:
+      - application/json
+      description: Create and start a new task.
+      parameters:
+      - description: user id and task title
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.TaskCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.Response-time_tracker_internal_models_TaskCreateRequest'
+      summary: create and start a new task
+      tags:
+      - Task
+  /api/v1/task/user:
+    get:
+      consumes:
+      - application/json
+      description: Get task by user id.
+      parameters:
+      - description: user id
+        in: query
+        name: id
+        required: true
+        type: number
+      - description: completed tasks
+        in: query
+        name: completed
+        required: true
+        type: boolean
+      - description: duration descending
+        in: query
+        name: durationDesc
+        required: true
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.Response-array_time_tracker_internal_models_Task2'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: get task by user id
+      tags:
+      - Task
+  /api/v1/user:
+    get:
+      consumes:
+      - application/json
+      description: User search with filter and pagination.
+      parameters:
+      - description: search parameters
+        in: body
+        name: params
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.UsersGetRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.UsersResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.ResponseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.ResponseError'
+      summary: user search with filter and pagination
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      description: Create a new user.
+      parameters:
+      - description: series and number of the user's passport
+        in: body
+        name: passport
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.UserCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.User'
+      summary: create a new user
+      tags:
+      - User
+  /api/v1/user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by id.
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.User'
+      summary: delete a user by id
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: Get user by id.
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.Response-time_tracker_internal_models_User'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: get user by id
+      tags:
+      - User
+    patch:
+      consumes:
+      - application/json
+      description: Update a user data.
+      parameters:
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/time_tracker_internal_models.UserUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/time_tracker_internal_models.User'
+      summary: update a user data
+      tags:
+      - User
+swagger: "2.0"

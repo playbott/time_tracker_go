@@ -1,0 +1,729 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is a simple API for time tracking.",
+        "title": "Time Tracker API",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "API Support",
+            "email": "rovsh.dev@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:80",
+    "basePath": "/",
+    "paths": {
+        "/api/v1/task": {
+            "get": {
+                "description": "Task search with filter and pagination.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task"
+                ],
+                "summary": "task search with filter and pagination",
+                "parameters": [
+                    {
+                        "description": "search parameters",
+                        "name": "params",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.TasksGetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.TasksSearchResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.ResponseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task/complete": {
+            "post": {
+                "description": "Complete a task.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task"
+                ],
+                "summary": "complete a task",
+                "parameters": [
+                    {
+                        "description": "task id and user id",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.TaskCompleteRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.Response-string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task/create-start": {
+            "post": {
+                "description": "Create and start a new task.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task"
+                ],
+                "summary": "create and start a new task",
+                "parameters": [
+                    {
+                        "description": "user id and task title",
+                        "name": "task",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.TaskCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.Response-time_tracker_internal_models_TaskCreateRequest"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/task/user": {
+            "get": {
+                "description": "Get task by user id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Task"
+                ],
+                "summary": "get task by user id",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "completed tasks",
+                        "name": "completed",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "duration descending",
+                        "name": "durationDesc",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.Response-array_time_tracker_internal_models_Task2"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user": {
+            "get": {
+                "description": "User search with filter and pagination.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "user search with filter and pagination",
+                "parameters": [
+                    {
+                        "description": "search parameters",
+                        "name": "params",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.UsersGetRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.UsersResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.ResponseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.ResponseError"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create a new user.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "create a new user",
+                "parameters": [
+                    {
+                        "description": "series and number of the user's passport",
+                        "name": "passport",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.UserCreateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/user/{id}": {
+            "get": {
+                "description": "Get user by id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "get user by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.Response-time_tracker_internal_models_User"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete a user by id.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "delete a user by id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.User"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update a user data.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "update a user data",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "user id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "User",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.UserUpdateRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/time_tracker_internal_models.User"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "gorm.DeletedAt": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "sql.NullTime": {
+            "type": "object",
+            "properties": {
+                "time": {
+                    "type": "string"
+                },
+                "valid": {
+                    "description": "Valid is true if Time is not NULL",
+                    "type": "boolean"
+                }
+            }
+        },
+        "time_tracker_internal_models.Page": {
+            "type": "object",
+            "required": [
+                "number",
+                "size"
+            ],
+            "properties": {
+                "number": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "size": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "time_tracker_internal_models.Response-array_time_tracker_internal_models_Task2": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/time_tracker_internal_models.Task2"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.Response-string": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.Response-time_tracker_internal_models_TaskCreateRequest": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/time_tracker_internal_models.TaskCreateRequest"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.Response-time_tracker_internal_models_User": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "$ref": "#/definitions/time_tracker_internal_models.User"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.ResponseError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.Task": {
+            "type": "object",
+            "properties": {
+                "completed_at": {
+                    "$ref": "#/definitions/sql.NullTime"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "started_at": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "time_tracker_internal_models.Task2": {
+            "type": "object",
+            "properties": {
+                "completed_at": {
+                    "type": "string"
+                },
+                "duration_seconds": {
+                    "type": "integer"
+                },
+                "duration_string": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "started_at": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "time_tracker_internal_models.TaskCompleteRequest": {
+            "type": "object",
+            "required": [
+                "user_id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "user_id": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "time_tracker_internal_models.TaskCreateRequest": {
+            "type": "object",
+            "required": [
+                "task_title",
+                "user_id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "task_title": {
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1
+                },
+                "user_id": {
+                    "type": "integer",
+                    "minimum": 1
+                }
+            }
+        },
+        "time_tracker_internal_models.TasksGetFilter": {
+            "type": "object",
+            "properties": {
+                "completed_at_from": {
+                    "type": "string"
+                },
+                "completed_at_to": {
+                    "type": "string"
+                },
+                "started_at_from": {
+                    "type": "string"
+                },
+                "started_at_to": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "time_tracker_internal_models.TasksGetRequest": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "$ref": "#/definitions/time_tracker_internal_models.TasksGetFilter"
+                },
+                "page": {
+                    "$ref": "#/definitions/time_tracker_internal_models.Page"
+                }
+            }
+        },
+        "time_tracker_internal_models.TasksSearchResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/time_tracker_internal_models.Task2"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "page": {
+                    "$ref": "#/definitions/time_tracker_internal_models.Page"
+                }
+            }
+        },
+        "time_tracker_internal_models.User": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "$ref": "#/definitions/gorm.DeletedAt"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "passport_number": {
+                    "type": "string"
+                },
+                "patronymic": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                },
+                "task": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/time_tracker_internal_models.Task"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.UserCreateRequest": {
+            "type": "object",
+            "properties": {
+                "passport_number": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.UserUpdateRequest": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "passport_number": {
+                    "type": "string"
+                },
+                "patronymic": {
+                    "type": "string"
+                },
+                "surname": {
+                    "type": "string"
+                }
+            }
+        },
+        "time_tracker_internal_models.UsersGetFilter": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "passport_number": {
+                    "type": "string",
+                    "maxLength": 11
+                },
+                "patronymic": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "surname": {
+                    "type": "string",
+                    "maxLength": 255
+                }
+            }
+        },
+        "time_tracker_internal_models.UsersGetRequest": {
+            "type": "object",
+            "properties": {
+                "filter": {
+                    "$ref": "#/definitions/time_tracker_internal_models.UsersGetFilter"
+                },
+                "page": {
+                    "$ref": "#/definitions/time_tracker_internal_models.Page"
+                }
+            }
+        },
+        "time_tracker_internal_models.UsersResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/time_tracker_internal_models.User"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                },
+                "page": {
+                    "$ref": "#/definitions/time_tracker_internal_models.Page"
+                }
+            }
+        }
+    }
+}
